@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS venues (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  category VARCHAR(100),
+  address VARCHAR(255),
+  description TEXT,
+  website VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
