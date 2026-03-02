@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS venues (
   description TEXT,
   website VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+); 
