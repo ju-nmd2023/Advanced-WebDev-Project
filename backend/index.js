@@ -35,6 +35,43 @@ app.get("/api/venues", async (req, res) => {
   res.json(rows);
 });
 
+app.post("/api/venues", async (req, res) => {
+  const { name, category, address, description, website } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: "Name is required" });
+  }
+
+  await pool.query(
+    "INSERT INTO venues (name, category, address, description, website) VALUES (?, ?, ?, ?, ?)",
+    [name, category, address, description, website]
+  );
+
+  res.json({ message: "Venue created" });
+});
+
+async function addVenue() {
+  const name = document.getElementById("name").value;
+
+  if (!name) {
+    alert("Name is required");
+    return;
+  }
+
+  await fetch("http://localhost:3000/api/venues", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name,
+      category: document.getElementById("category").value,
+      address: document.getElementById("address").value,
+      website: document.getElementById("website").value,
+    }),
+  });
+
+  loadVenues();
+}
+
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => {
   console.log(`Backend code running at http://localhost:${port}`);

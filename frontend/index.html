@@ -1,9 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>JkpgCity Venues</title>
   </head>
-  <body></body>
+  <body>
+    <h1>Venues</h1>
+    <div id="list"></div>
+
+    <script>
+      async function loadVenues() {
+        const res = await fetch("http://localhost:3000/api/venues");
+        const venues = await res.json();
+
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+
+        venues.forEach((v) => {
+          const div = document.createElement("div");
+          div.innerHTML = `
+          <h3>${v.name}</h3>
+          <p>${v.category || ""}</p>
+          <p>${v.address || ""}</p>
+          <hr/>
+        `;
+          list.appendChild(div);
+        });
+      }
+
+      loadVenues();
+    </script>
+
+    <h2>Add Venue</h2>
+
+    <input id="name" placeholder="Name" />
+    <input id="category" placeholder="Category" />
+    <input id="address" placeholder="Address" />
+    <input id="website" placeholder="Website" />
+    <button onclick="addVenue()">Add</button>
+
+    <hr />
+  </body>
 </html>
