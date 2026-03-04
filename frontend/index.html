@@ -2,46 +2,64 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>JkpgCity Venues</title>
+    <title>Jönköping City Guide</title>
   </head>
+
   <body>
-    <container>
-      <h1>Jönköping City</h1>
-    </container>
+    <h1>Jönköping City Guide</h1>
+
+    <h2>Categories</h2>
+
+    <button onclick="filterCategory('')">All</button>
+    <button onclick="filterCategory('restaurant')">Restaurants</button>
+    <button onclick="filterCategory('cafe')">Cafés</button>
+    <button onclick="filterCategory('bar')">Bars</button>
+    <button onclick="filterCategory('venue')">Venues</button>
+    <hr />
+
+    <!-- FILTER SECTION -->
+    <h2>Filter</h2>
+
+    <select id="filterLocation">
+      <option value="">All Locations</option>
+      <option value="centrum">Centrum</option>
+      <option value="torpa">Torpa</option>
+      <option value="huskvarna">Huskvarna</option>
+    </select>
+
+    <button onclick="applyFilters()">Apply Filter</button>
+
+    <hr />
+
+    <!-- VENUE LIST -->
     <h2>Venues</h2>
     <div id="list"></div>
 
-    <script>
-      async function loadVenues() {
-        const res = await fetch("http://localhost:3000/api/venues");
-        const venues = await res.json();
+    <hr />
 
-        const list = document.getElementById("list");
-        list.innerHTML = "";
-
-        venues.forEach((v) => {
-          const div = document.createElement("div");
-          div.innerHTML = `
-          <h3>${v.name}</h3>
-          <p>${v.category || ""}</p>
-          <p>${v.address || ""}</p>
-          <hr/>
-        `;
-          list.appendChild(div);
-        });
-      }
-
-      loadVenues();
-    </script>
-
+    <!-- ADD VENUE -->
     <h2>Add Venue</h2>
 
     <input id="name" placeholder="Name" />
-    <input id="category" placeholder="Category" />
+
+    <select id="category">
+      <option value="restaurant">Restaurant</option>
+      <option value="cafe">Cafe</option>
+      <option value="bar">Bar</option>
+      <option value="venue">Venue</option>
+    </select>
+
+    <select id="location">
+      <option value="centrum">Centrum</option>
+      <option value="torpa">Torpa</option>
+      <option value="huskvarna">Huskvarna</option>
+    </select>
+
     <input id="address" placeholder="Address" />
     <input id="website" placeholder="Website" />
+
     <button onclick="addVenue()">Add</button>
 
-    <hr />
+    <script src="main.js"></script>
   </body>
 </html>
