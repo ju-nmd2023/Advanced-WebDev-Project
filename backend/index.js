@@ -84,6 +84,14 @@ app.post("/api/venues", async (req, res) => {
   }
 });
 
+app.delete("/api/venues/:id", async (req, res) => {
+  const id = req.params.id;
+
+  await pool.query("DELETE FROM venues WHERE id = ?", [id]);
+
+  res.json({ message: "Venue deleted" });
+});
+
 const port = Number(process.env.PORT || 3000);
 
 app.listen(port, () => {

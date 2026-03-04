@@ -24,15 +24,19 @@ function renderVenues(venues) {
     const div = document.createElement("div");
 
     div.innerHTML = `
-      <h3>${v.name}</h3>
-      <p>Category: ${v.category || ""}</p>
-      <p>Location: ${v.location || ""}</p>
-      <p>Address: ${v.address || ""}</p>
-      <p>Rating: ${stars || "No rating yet"}</p>
-      <p>Opening hours: ${v.opening_hours || ""}</p>
-      <p><a href="${v.maps_link}" target="_blank">Google Maps</a></p>
-      <hr>
-    `;
+<h3>${v.name}</h3>
+<p>Category: ${v.category || ""}</p>
+<p>Location: ${v.location || ""}</p>
+<p>Address: ${v.address || ""}</p>
+<p>Rating: ${stars}</p>
+<p>Opening hours: ${v.opening_hours || ""}</p>
+
+<p><a href="${v.maps_link}" target="_blank">Google Maps</a></p>
+
+<button onclick="deleteVenue(${v.id})">Delete</button>
+
+<hr>
+`;
 
     list.appendChild(div);
   });
@@ -81,6 +85,14 @@ async function addVenue() {
   document.getElementById("open").value = "";
   document.getElementById("close").value = "";
   document.getElementById("maps_link").value = "";
+}
+
+async function deleteVenue(id) {
+  await fetch(`/api/venues/${id}`, {
+    method: "DELETE",
+  });
+
+  loadVenues();
 }
 
 function filterCategory(category) {
