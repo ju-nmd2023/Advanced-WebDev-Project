@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("../frontend"));
 
-// MySQL connection
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -20,76 +19,68 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-// Test server
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true, message: "Backend running" });
+  res.json({ ok: true });
 });
 
-// Test database
-app.get("/api/health/db", async (req, res) => {
-  try {
-    const [rows] = await pool.query("SELECT 1 AS ok");
-    res.json(rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database connection failed" });
-  }
-});
-
-// GET venues with optional filters
 app.get("/api/venues", async (req, res) => {
-  try {
-    const { category, location } = req.query;
+  const { category, location } = req.query;
 
-    let query = "SELECT * FROM venues WHERE 1=1";
-    const params = [];
+  let query = "SELECT * FROM venues WHERE 1=1";
+  const params = [];
 
-    if (category) {
-      query += " AND category = ?";
-      params.push(category);
-    }
-
-    if (location) {
-      query += " AND location = ?";
-      params.push(location);
-    }
-
-    query += " ORDER BY id ASC";
-
-    const [rows] = await pool.query(query, params);
-
-    res.json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch venues" });
+  if (category) {
+    query += " AND category = ?";
+    params.push(category);
   }
+
+  if (location) {
+    query += " AND location = ?";
+    params.push(location);
+  }
+
+  query += " ORDER BY id ASC";
+
+  const [rows] = await pool.query(query, params);
+
+  res.json(rows);
 });
 
-// Add venue
 app.post("/api/venues", async (req, res) => {
   try {
-    const { name, category, location, address, website } = req.body;
+    console.log("Incoming venue:", req.body);
 
-    if (!name) {
-      return res.status(400).json({ error: "Name is required" });
-    }
+    const {
+      name,
+      category,
+      location,
+      address,
+      website,
+      rating,
+      opening_hours,
+      maps_link,
+    } = req.body;
 
     await pool.query(
-      `INSERT INTO venues (name, category, location, address, website)
-       VALUES (?, ?, ?, ?, ?)`,
+      `INSERT INTO venues
+      (name, category, location, address, website, rating, opening_hours, maps_link)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name,
-        category || null,
-        location || null,
-        address || null,
-        website || null,
+        category,
+        location,
+        address,
+        website,
+        rating,
+        opening_hours,
+        maps_link,
       ]
     );
 
-    res.json({ message: "Venue created" });
+    res.json({ success: true });
   } catch (err) {
     console.error("Insert error:", err);
-    res.status(500).json({ error: "Failed to add venue" });
+    res.status(500).json({ error: "Database error" });
   }
 });
 
