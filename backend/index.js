@@ -84,6 +84,40 @@ app.post("/api/venues", async (req, res) => {
   }
 });
 
+app.put("/api/venues/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const {
+    name,
+    category,
+    location,
+    address,
+    website,
+    rating,
+    opening_hours,
+    maps_link,
+  } = req.body;
+
+  await pool.query(
+    `UPDATE venues
+SET name=?, category=?, location=?, address=?, website=?, rating=?, opening_hours=?, maps_link=?
+WHERE id=?`,
+    [
+      name,
+      category,
+      location,
+      address,
+      website,
+      rating,
+      opening_hours,
+      maps_link,
+      id,
+    ]
+  );
+
+  res.json({ success: true });
+});
+
 app.delete("/api/venues/:id", async (req, res) => {
   const id = req.params.id;
 

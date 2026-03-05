@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Jönköping City Guide</title>
+
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
@@ -18,59 +20,78 @@
 
     <hr />
 
-    <h2>Filter</h2>
+    <div class="top-controls">
+      <div class="search-sort">
+        <h2>Search & Sort</h2>
 
-    <select id="filterLocation">
-      <option value="">All Locations</option>
-      <option value="centrum">Centrum</option>
-      <option value="torpa">Torpa</option>
-      <option value="huskvarna">Huskvarna</option>
-    </select>
+        <input
+          id="searchInput"
+          placeholder="Search venues..."
+          onkeyup="searchVenues()"
+        />
 
-    <button onclick="applyFilters()">Apply Filter</button>
+        <select id="sortSelect" onchange="sortVenues()">
+          <option value="">Sort</option>
+          <option value="rating">Rating</option>
+          <option value="name">Name (A-Z)</option>
+        </select>
+      </div>
+
+      <div class="filters">
+        <h2>Filters</h2>
+
+        <select id="filterLocation">
+          <option value="">All Locations</option>
+          <option value="centrum">Centrum</option>
+          <option value="torpa">Torpa</option>
+          <option value="huskvarna">Huskvarna</option>
+        </select>
+
+        <label>
+          <input type="checkbox" id="filterOpenNow" />
+          Open now
+        </label>
+
+        <button onclick="applyFilters()">Apply</button>
+      </div>
+    </div>
 
     <hr />
 
-    <h2>Venues</h2>
-
-    <div id="list"></div>
+    <div id="list" class="venue-grid"></div>
 
     <hr />
 
     <h2>Add Venue</h2>
 
-    <input id="name" placeholder="Name" />
+    <div class="add-venue-form">
+      <input id="name" placeholder="Name" />
 
-    <select id="category">
-      <option value="restaurant">Restaurant</option>
-      <option value="cafe">Cafe</option>
-      <option value="bar">Bar</option>
-      <option value="venue">Venue</option>
-    </select>
+      <select id="category">
+        <option value="restaurant">Restaurant</option>
+        <option value="cafe">Cafe</option>
+        <option value="bar">Bar</option>
+        <option value="venue">Venue</option>
+      </select>
 
-    <select id="location">
-      <option value="centrum">Centrum</option>
-      <option value="torpa">Torpa</option>
-      <option value="huskvarna">Huskvarna</option>
-    </select>
+      <select id="location">
+        <option value="centrum">Centrum</option>
+        <option value="torpa">Torpa</option>
+        <option value="huskvarna">Huskvarna</option>
+      </select>
 
-    <input id="address" placeholder="Address" />
-    <input id="website" placeholder="Website" />
+      <input id="address" placeholder="Address" />
+      <input id="website" placeholder="Website" />
 
-    <input
-      id="rating"
-      type="number"
-      min="1"
-      max="5"
-      placeholder="Rating (1-5)"
-    />
+      <input id="rating" type="number" min="1" max="5" placeholder="Rating" />
 
-    <input id="open" placeholder="Opening time (10:00)" />
-    <input id="close" placeholder="Closing time (23:00)" />
+      <input id="open" placeholder="Opening time (10:00)" />
+      <input id="close" placeholder="Closing time (23:00)" />
 
-    <input id="maps_link" placeholder="Google Maps link" />
+      <input id="maps_link" placeholder="Google Maps link" />
 
-    <button onclick="addVenue()">Add</button>
+      <button onclick="addVenue()">Add</button>
+    </div>
 
     <script src="main.js"></script>
   </body>
