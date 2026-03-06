@@ -12,11 +12,23 @@
 
     <h2>Categories</h2>
 
-    <button onclick="filterCategory('')">All</button>
-    <button onclick="filterCategory('restaurant')">Restaurants</button>
-    <button onclick="filterCategory('cafe')">Cafés</button>
-    <button onclick="filterCategory('bar')">Bars</button>
-    <button onclick="filterCategory('venue')">Venues</button>
+    <div class="category-buttons">
+      <button onclick="filterCategory('')">All</button>
+
+      <button onclick="filterCategory('Restaurant')">Restaurant</button>
+      <button onclick="filterCategory('Bar')">Bar</button>
+      <button onclick="filterCategory('Hotel')">Hotel</button>
+      <button onclick="filterCategory('Shopping')">Shopping</button>
+      <button onclick="filterCategory('Activity')">Activity</button>
+      <button onclick="filterCategory('School')">School</button>
+      <button onclick="filterCategory('Café')">Café</button>
+      <button onclick="filterCategory('Sports')">Sports</button>
+      <button onclick="filterCategory('Transportation')">Transportation</button>
+      <button onclick="filterCategory('Healthcare')">Healthcare</button>
+      <button onclick="filterCategory('Park')">Park</button>
+      <button onclick="filterCategory('Nightlife')">Nightlife</button>
+      <button onclick="filterCategory('Museum')">Museum</button>
+    </div>
 
     <hr />
 
@@ -42,9 +54,32 @@
 
         <select id="filterLocation">
           <option value="">All Locations</option>
-          <option value="centrum">Centrum</option>
-          <option value="torpa">Torpa</option>
-          <option value="huskvarna">Huskvarna</option>
+          <option value="Centrum">Centrum</option>
+          <option value="Torpa">Torpa</option>
+          <option value="Söder">Söder</option>
+          <option value="Väster">Väster</option>
+          <option value="Öster">Öster</option>
+          <option value="Kålgården">Kålgården</option>
+          <option value="Bäckalyckan">Bäckalyckan</option>
+          <option value="Huskvarna">Huskvarna</option>
+          <option value="Råslätt">Råslätt</option>
+        </select>
+
+        <select id="filterCategory">
+          <option value="">All Categories</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Bar">Bar</option>
+          <option value="Hotel">Hotel</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Activity">Activity</option>
+          <option value="School">School</option>
+          <option value="Café">Café</option>
+          <option value="Sports">Sports</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Park">Park</option>
+          <option value="Nightlife">Nightlife</option>
+          <option value="Museum">Museum</option>
         </select>
 
         <label>
@@ -68,16 +103,31 @@
       <input id="name" placeholder="Name" />
 
       <select id="category">
-        <option value="restaurant">Restaurant</option>
-        <option value="cafe">Cafe</option>
-        <option value="bar">Bar</option>
-        <option value="venue">Venue</option>
+        <option value="Restaurant">Restaurant</option>
+        <option value="Bar">Bar</option>
+        <option value="Hotel">Hotel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Activity">Activity</option>
+        <option value="School">School</option>
+        <option value="Café">Café</option>
+        <option value="Sports">Sports</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Park">Park</option>
+        <option value="Nightlife">Nightlife</option>
+        <option value="Museum">Museum</option>
       </select>
 
       <select id="location">
-        <option value="centrum">Centrum</option>
-        <option value="torpa">Torpa</option>
-        <option value="huskvarna">Huskvarna</option>
+        <option value="Centrum">Centrum</option>
+        <option value="Torpa">Torpa</option>
+        <option value="Söder">Söder</option>
+        <option value="Väster">Väster</option>
+        <option value="Öster">Öster</option>
+        <option value="Kålgården">Kålgården</option>
+        <option value="Bäckalyckan">Bäckalyckan</option>
+        <option value="Huskvarna">Huskvarna</option>
+        <option value="Råslätt">Råslätt</option>
       </select>
 
       <input id="address" placeholder="Address" />

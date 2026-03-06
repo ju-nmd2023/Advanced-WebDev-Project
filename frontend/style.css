@@ -115,3 +115,10 @@ hr {
 .add-venue-form button {
   padding: 8px 14px;
 }
+
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}

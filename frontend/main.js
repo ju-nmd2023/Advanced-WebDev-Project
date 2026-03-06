@@ -195,19 +195,37 @@ function filterCategory(category) {
 // LOCATION FILTER
 async function applyFilters() {
   const location = document.getElementById("filterLocation").value;
+  const category = document.getElementById("filterCategory").value;
+  const openNow = document.getElementById("filterOpenNow").checked;
 
   let url = "/api/venues?";
 
-  if (currentCategory) {
-    url += `category=${currentCategory}&`;
+  if (location) {
+    url += `location=${location}&`;
   }
 
-  if (location) {
-    url += `location=${location}`;
+  if (category) {
+    url += `category=${category}&`;
   }
 
   const res = await fetch(url);
-  const venues = await res.json();
+  let venues = await res.json();
+
+  if (openNow) {
+    const now = new Date();
+    const currentTime =
+      now.getHours().toString().padStart(2, "0") +
+      ":" +
+      now.getMinutes().toString().padStart(2, "0");
+
+    venues = venues.filter((v) => {
+      if (!v.opening_hours) return false;
+
+      const [open, close] = v.opening_hours.split(" - ");
+
+      return currentTime >= open && currentTime <= close;
+    });
+  }
 
   renderVenues(venues);
 }
