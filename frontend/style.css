@@ -181,11 +181,55 @@ h2 {
   color: white;
   font-size: 14px;
   cursor: pointer;
-  transition: 0.2s;
+  /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);*/
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.category-btn[data-category=""] {
+  background: #ffffff;
+  color: #2e1037;
+  border: 1px solid #cda6d8;
+}
+
+.category-btn[data-category=""]:hover {
+  background: #f5ecff;
+  color: #2e1037;
+}
+
+/* "All" selected state: slightly darker than hover */
+.category-btn[data-category=""].all-selected {
+  background: #e4d5ff;
+  color: #2e1037;
+  border-color: #b890ff;
+}
+
+.category-btn[data-category=""].all-selected:hover {
+  background: #e4d5ff;
+}
+
+.category-btn.active {
+  background: #9cc762;
+  color: #1f3a12;
+}
+
+.extra-category {
+  display: none;
+}
+
+.category-buttons.show-more .extra-category {
+  display: inline-flex;
 }
 
 .category-buttons button:hover {
   background: #b78cc7;
+  /*transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
+}
+
+/* Keep active buttons green even on hover */
+.category-btn.active:hover {
+  background: #9cc762;
+  color: #1f3a12;
 }
 
 /* SEARCH + FILTER AREA */

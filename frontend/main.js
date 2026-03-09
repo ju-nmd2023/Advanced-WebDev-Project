@@ -187,9 +187,37 @@ async function deleteVenue(id) {
 }
 
 // FILTER CATEGORY
-function filterCategory(category) {
+function filterCategory(category, btn) {
   currentCategory = category;
   loadVenues();
+
+  // Visually toggle green active state on clicked buttons, but keep "All" neutral
+  if (btn) {
+    if (category === "") {
+      // Toggle a separate selected style for "All"
+      btn.classList.toggle("all-selected");
+    } else {
+      btn.classList.toggle("active");
+
+      // If any specific category is active, make sure "All" is not
+      const allBtn = document.querySelector(
+        '.category-buttons .category-btn[data-category=""]'
+      );
+      if (allBtn) {
+        allBtn.classList.remove("all-selected");
+      }
+    }
+  }
+
+  // Only the "All" button (empty category) controls showing/hiding extra buttons
+  const container = document.querySelector(".category-buttons");
+
+  if (!container) return;
+
+  if (category === "") {
+    // Toggle extra category visibility when clicking "All"
+    container.classList.toggle("show-more");
+  }
 }
 
 // LOCATION FILTER
@@ -290,3 +318,7 @@ function searchVenues() {
 
 // INITIAL LOAD
 loadVenues();
+document.addEventListener("DOMContentLoaded", () => {
+  // Mark initial category ("All") as active
+  setActiveCategoryButton(currentCategory);
+});
