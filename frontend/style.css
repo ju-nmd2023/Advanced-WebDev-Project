@@ -141,23 +141,23 @@ h1 {
   margin: 0;
   font-size: 26px;
   color: white;
-  
+
   /* Flexbox makes children (span and img) sit on the same line */
   display: flex;
   justify-content: space-between; /* Pushes text left, image right */
-  align-items: center;            /* Centers them vertically */
+  align-items: center; /* Centers them vertically */
 }
 
 /* LOGIN IMAGE STYLING */
 .header-login-img {
   height: 45px;
   width: 45px;
-  min-width: 45px;    /* Stops it from squishing on small screens */
-  object-fit: cover;  /* Keeps the image from looking stretched */
+  min-width: 45px; /* Stops it from squishing on small screens */
+  object-fit: cover; /* Keeps the image from looking stretched */
   border-radius: 50%; /* Makes it a circle */
   cursor: pointer;
   transition: 0.3s;
-  flex-shrink: 0;     /* Ensures it stays 45px wide */
+  flex-shrink: 0; /* Ensures it stays 45px wide */
 }
 
 .header-login-img:hover {
@@ -319,6 +319,23 @@ select:focus {
   font-size: 18px;
 }
 
+.venue-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.venue-details a {
+  color: #7b4bb7;
+  text-decoration: none;
+}
+
+.venue-details a:hover {
+  text-decoration: underline;
+}
+
 /* BUTTONS */
 
 button {
@@ -334,23 +351,32 @@ button:hover {
   background: #ddd;
 }
 
+.venue-card button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
 /* ADD VENUE FORM */
 
 .add-venue-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
-  padding: 0 40px 40px 40px; 
+  padding: 0 40px 40px 40px;
   box-sizing: border-box;
 }
 
 .add-venue-form input,
 .add-venue-form select {
-  width: 100%; 
-  height: 40px; 
+  width: 100%;
+  height: 40px;
   padding: 10px;
   font-size: 14px;
-  border-radius: 8px; 
+  border-radius: 8px;
   border: 1px solid #ddd;
   box-sizing: border-box;
   background: white;
@@ -363,7 +389,7 @@ button:hover {
 }
 
 .add-venue-form button {
-  grid-column: 1 / -1; 
+  grid-column: 1 / -1;
   height: 45px;
   background: #cda6d8;
   color: white;
@@ -395,4 +421,68 @@ hr {
   margin: 30px 40px;
   border: none;
   border-top: 1px solid #eee;
+}
+
+/* FOOTER */
+
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  background: #f5f5f5;
+  font-size: 14px;
+}
+
+.footer a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* LOG-IN FORM */
+
+.login-box {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-box input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-box button {
+  padding: 10px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background: #555;
+}
+
+#message {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}
+
+body h1 {
+  text-align: center;
 }

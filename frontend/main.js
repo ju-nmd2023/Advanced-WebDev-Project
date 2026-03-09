@@ -62,6 +62,18 @@ function renderVenues(venues) {
 <p>Location: ${v.location || ""}</p>
 <p>Opening hours: ${v.opening_hours || ""}</p>
 
+<div id="details-${v.id}" class="venue-details" style="display:none">
+
+<p><strong>Category:</strong> ${v.category || ""}</p>
+<p><strong>Address:</strong> ${v.address || ""}</p>
+<p><strong>Website:</strong> <a href="${
+      v.website
+    }" target="_blank">Visit</a></p>
+<p><strong>Rating:</strong> ${stars}</p>
+<p><a href="${v.maps_link}" target="_blank">Google Maps</a></p>
+
+</div>
+
 <button id="toggle-${v.id}" onclick="toggleDetails(${v.id})">
 Read more
 </button>
@@ -74,12 +86,14 @@ ${
 `
     : ""
 }
-<div id="details-${v.id}" style="display:none">
+<div id="details-${v.id}" class="venue-details" style="display:none">
 
-<p>Category: ${v.category || ""}</p>
-<p>Address: ${v.address || ""}</p>
-<p>Website: <a href="${v.website}" target="_blank">Visit</a></p>
-<p>Rating: ${stars}</p>
+<p><strong>Category:</strong> ${v.category || ""}</p>
+<p><strong>Address:</strong> ${v.address || ""}</p>
+<p><strong>Website:</strong> <a href="${
+      v.website
+    }" target="_blank">Visit</a></p>
+<p><strong>Rating:</strong> ${stars}</p>
 <p><a href="${v.maps_link}" target="_blank">Google Maps</a></p>
 
 </div>
