@@ -8,12 +8,14 @@
   </head>
 
   <body>
-    <h1>Jönköping City Guide</h1>
-    <div class="hero"></div>
+<h1>
+  <span>Jönköping City Guide</span>
+  <img src="login.png" alt="Login" class="header-login-img" />
+</h1>    <div class="hero"></div>
     <h2>Categories</h2>
 
     <div class="category-buttons">
-      <button onclick="filterCategory('')">All</button>
+      <!-- <button onclick="filterCategory('')">All</button>
 
       <button onclick="filterCategory('Restaurant')">Restaurant</button>
       <button onclick="filterCategory('Bar')">Bar</button>
@@ -27,7 +29,108 @@
       <button onclick="filterCategory('Healthcare')">Healthcare</button>
       <button onclick="filterCategory('Park')">Park</button>
       <button onclick="filterCategory('Nightlife')">Nightlife</button>
-      <button onclick="filterCategory('Museum')">Museum</button>
+      <button onclick="filterCategory('Museum')">Museum</button> -->
+
+      <button
+        class="category-btn"
+        data-category=""
+        onclick="filterCategory('', this)"
+      >
+        All
+      </button>
+
+      <button
+        class="category-btn"
+        data-category="Restaurant"
+        onclick="filterCategory('Restaurant', this)"
+      >
+        Restaurant
+      </button>
+      <button
+        class="category-btn"
+        data-category="Bar"
+        onclick="filterCategory('Bar', this)"
+      >
+        Bar
+      </button>
+      <button
+        class="category-btn"
+        data-category="Hotel"
+        onclick="filterCategory('Hotel', this)"
+      >
+        Hotel
+      </button>
+      <button
+        class="category-btn"
+        data-category="Shopping"
+        onclick="filterCategory('Shopping', this)"
+      >
+        Shopping
+      </button>
+
+      <button
+        class="category-btn extra-category"
+        data-category="Activity"
+        onclick="filterCategory('Activity', this)"
+      >
+        Activity
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="School"
+        onclick="filterCategory('School', this)"
+      >
+        School
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Café"
+        onclick="filterCategory('Café', this)"
+      >
+        Café
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Sports"
+        onclick="filterCategory('Sports', this)"
+      >
+        Sports
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Transportation"
+        onclick="filterCategory('Transportation', this)"
+      >
+        Transportation
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Healthcare"
+        onclick="filterCategory('Healthcare', this)"
+      >
+        Healthcare
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Park"
+        onclick="filterCategory('Park', this)"
+      >
+        Park
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Nightlife"
+        onclick="filterCategory('Nightlife', this)"
+      >
+        Nightlife
+      </button>
+      <button
+        class="category-btn extra-category"
+        data-category="Museum"
+        onclick="filterCategory('Museum', this)"
+      >
+        Museum
+      </button>
     </div>
 
     <hr />
