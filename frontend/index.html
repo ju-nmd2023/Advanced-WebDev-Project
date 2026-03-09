@@ -10,28 +10,11 @@
   <body>
     <h1>
       <span>Jönköping City Guide</span>
-      <img src="login.png" alt="Login" class="header-login-img" />
     </h1>
     <div class="hero"></div>
     <h2>Categories</h2>
 
     <div class="category-buttons">
-      <!-- <button onclick="filterCategory('')">All</button>
-
-      <button onclick="filterCategory('Restaurant')">Restaurant</button>
-      <button onclick="filterCategory('Bar')">Bar</button>
-      <button onclick="filterCategory('Hotel')">Hotel</button>
-      <button onclick="filterCategory('Shopping')">Shopping</button>
-      <button onclick="filterCategory('Activity')">Activity</button>
-      <button onclick="filterCategory('School')">School</button>
-      <button onclick="filterCategory('Café')">Café</button>
-      <button onclick="filterCategory('Sports')">Sports</button>
-      <button onclick="filterCategory('Transportation')">Transportation</button>
-      <button onclick="filterCategory('Healthcare')">Healthcare</button>
-      <button onclick="filterCategory('Park')">Park</button>
-      <button onclick="filterCategory('Nightlife')">Nightlife</button>
-      <button onclick="filterCategory('Museum')">Museum</button> -->
-
       <button
         class="category-btn"
         data-category=""
@@ -138,23 +121,22 @@
 
     <div class="top-controls">
       <div class="search-sort">
-        <h2>Search & Sort</h2>
+        <h2>Search locations:</h2>
 
         <input
           id="searchInput"
-          placeholder="Search venues..."
+          placeholder="Type here..."
           onkeyup="searchVenues()"
         />
 
-        <select id="sortSelect" onchange="sortVenues()">
-          <option value="">Sort</option>
-          <option value="rating">Rating</option>
-          <option value="name">Name (A-Z)</option>
-        </select>
+        <label class="open-now">
+          <input type="checkbox" id="filterOpenNow" />
+          <span>Open now</span>
+        </label>
       </div>
 
       <div class="filters">
-        <h2>Filters</h2>
+        <h2>Filters:</h2>
 
         <select id="filterLocation">
           <option value="">All Locations</option>
@@ -185,11 +167,6 @@
           <option value="Nightlife">Nightlife</option>
           <option value="Museum">Museum</option>
         </select>
-
-        <label class="open-now">
-          <input type="checkbox" id="filterOpenNow" />
-          <span>Open now</span>
-        </label>
 
         <button onclick="applyFilters()">Apply</button>
       </div>
