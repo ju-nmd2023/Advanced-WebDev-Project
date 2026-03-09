@@ -97,52 +97,62 @@
 
     <hr />
 
-    <h2>Add Venue</h2>
+    <div id="addVenueSection">
+      <h2>Add Venue</h2>
 
-    <div class="add-venue-form">
-      <input id="name" placeholder="Name" />
+      <div class="add-venue-form">
+        <input id="name" placeholder="Name" />
 
-      <select id="category">
-        <option value="Restaurant">Restaurant</option>
-        <option value="Bar">Bar</option>
-        <option value="Hotel">Hotel</option>
-        <option value="Shopping">Shopping</option>
-        <option value="Activity">Activity</option>
-        <option value="School">School</option>
-        <option value="Café">Café</option>
-        <option value="Sports">Sports</option>
-        <option value="Transportation">Transportation</option>
-        <option value="Healthcare">Healthcare</option>
-        <option value="Park">Park</option>
-        <option value="Nightlife">Nightlife</option>
-        <option value="Museum">Museum</option>
-      </select>
+        <select id="category">
+          <option value="Restaurant">Restaurant</option>
+          <option value="Bar">Bar</option>
+          <option value="Hotel">Hotel</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Activity">Activity</option>
+          <option value="School">School</option>
+          <option value="Café">Café</option>
+          <option value="Sports">Sports</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Park">Park</option>
+          <option value="Nightlife">Nightlife</option>
+          <option value="Museum">Museum</option>
+        </select>
 
-      <select id="location">
-        <option value="Centrum">Centrum</option>
-        <option value="Torpa">Torpa</option>
-        <option value="Söder">Söder</option>
-        <option value="Väster">Väster</option>
-        <option value="Öster">Öster</option>
-        <option value="Kålgården">Kålgården</option>
-        <option value="Bäckalyckan">Bäckalyckan</option>
-        <option value="Huskvarna">Huskvarna</option>
-        <option value="Råslätt">Råslätt</option>
-      </select>
+        <select id="location">
+          <option value="Centrum">Centrum</option>
+          <option value="Torpa">Torpa</option>
+          <option value="Söder">Söder</option>
+          <option value="Väster">Väster</option>
+          <option value="Öster">Öster</option>
+          <option value="Kålgården">Kålgården</option>
+          <option value="Bäckalyckan">Bäckalyckan</option>
+          <option value="Huskvarna">Huskvarna</option>
+          <option value="Råslätt">Råslätt</option>
+        </select>
 
-      <input id="address" placeholder="Address" />
-      <input id="website" placeholder="Website" />
+        <input id="address" placeholder="Address" />
+        <input id="website" placeholder="Website" />
 
-      <input id="rating" type="number" min="1" max="5" placeholder="Rating" />
+        <input id="rating" type="number" min="1" max="5" placeholder="Rating" />
 
-      <input id="open" placeholder="Opening time (10:00)" />
-      <input id="close" placeholder="Closing time (23:00)" />
+        <input id="open" placeholder="Opening time (10:00)" />
+        <input id="close" placeholder="Closing time (23:00)" />
 
-      <input id="maps_link" placeholder="Google Maps link" />
+        <input id="maps_link" placeholder="Google Maps link" />
 
-      <button onclick="addVenue()">Add</button>
+        <button onclick="addVenue()">Add</button>
+      </div>
     </div>
-
     <script src="main.js"></script>
   </body>
+  <footer class="footer">
+    <p>Jönköping City Guide © 2026</p>
+
+    <p>
+      <a id="developerLink" href="login.html">Developer</a>
+    </p>
+  </footer>
+
+  <script src="main.js"></script>
 </html>

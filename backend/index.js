@@ -84,6 +84,35 @@ app.post("/api/venues", async (req, res) => {
   }
 });
 
+app.post("/api/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [
+      username,
+    ]);
+
+    if (rows.length === 0) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    const user = rows[0];
+
+    if (user.password !== password) {
+      return res.json({ success: false, message: "Wrong password" });
+    }
+
+    res.json({
+      success: true,
+      username: user.username,
+      role: user.role,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 app.put("/api/venues/:id", async (req, res) => {
   const { id } = req.params;
 

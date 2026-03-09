@@ -1,6 +1,31 @@
 let currentCategory = "";
 let allVenues = [];
 
+// Checking session for user, and if the admin is present
+const user = JSON.parse(localStorage.getItem("user"));
+const isAdmin = user && user.role === "admin";
+
+window.addEventListener("DOMContentLoaded", () => {
+  const devLink = document.getElementById("developerLink");
+
+  if (isAdmin) {
+    devLink.innerText = "Logout";
+
+    devLink.onclick = function (e) {
+      e.preventDefault();
+      localStorage.removeItem("user");
+      location.reload();
+    };
+  }
+
+  if (!isAdmin) {
+    const addSection = document.getElementById("addVenueSection");
+    if (addSection) {
+      addSection.style.display = "none";
+    }
+  }
+});
+
 // LOAD VENUES
 async function loadVenues() {
   let url = "/api/venues";
@@ -41,9 +66,14 @@ function renderVenues(venues) {
 Read more
 </button>
 
+${
+  isAdmin
+    ? `
 <button onclick="startEdit(${v.id})">Edit</button>
 <button onclick="deleteVenue(${v.id})">Delete</button>
-
+`
+    : ""
+}
 <div id="details-${v.id}" style="display:none">
 
 <p>Category: ${v.category || ""}</p>
@@ -123,6 +153,59 @@ function toggleDetails(id) {
   }
 }
 
+// ADD VENUE
+async function addVenue() {
+  if (!isAdmin) {
+    alert("Only admins can add venues.");
+    return;
+  }
+
+  const name = document.getElementById("name").value;
+  const category = document.getElementById("category").value;
+  const location = document.getElementById("location").value;
+  const address = document.getElementById("address").value;
+  const website = document.getElementById("website").value;
+
+  const rating = parseInt(document.getElementById("rating").value) || 0;
+
+  const open = document.getElementById("open").value;
+  const close = document.getElementById("close").value;
+
+  const maps_link = document.getElementById("maps_link").value;
+
+  const opening_hours = open && close ? `${open} - ${close}` : "";
+
+  await fetch("/api/venues", {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      name,
+      category,
+      location,
+      address,
+      website,
+      rating,
+      opening_hours,
+      maps_link,
+    }),
+  });
+
+  // clear form
+  document.getElementById("name").value = "";
+  document.getElementById("address").value = "";
+  document.getElementById("website").value = "";
+  document.getElementById("rating").value = "";
+  document.getElementById("open").value = "";
+  document.getElementById("close").value = "";
+  document.getElementById("maps_link").value = "";
+
+  loadVenues();
+}
+
 // START EDIT
 function startEdit(id) {
   document.getElementById(`view-${id}`).style.display = "none";
@@ -137,6 +220,11 @@ function cancelEdit(id) {
 
 // SAVE EDIT
 async function saveEdit(id) {
+  if (!isAdmin) {
+    alert("Only admins can edit venues.");
+    return;
+  }
+
   const name = document.getElementById(`edit-name-${id}`).value;
   const category = document.getElementById(`edit-category-${id}`).value;
   const location = document.getElementById(`edit-location-${id}`).value;
@@ -179,6 +267,11 @@ async function saveEdit(id) {
 
 // DELETE VENUE
 async function deleteVenue(id) {
+  if (!isAdmin) {
+    alert("Only admins can delete venues.");
+    return;
+  }
+
   await fetch(`/api/venues/${id}`, {
     method: "DELETE",
   });
@@ -228,54 +321,6 @@ async function applyFilters() {
   }
 
   renderVenues(venues);
-}
-
-// ADD VENUE
-async function addVenue() {
-  const name = document.getElementById("name").value;
-  const category = document.getElementById("category").value;
-  const location = document.getElementById("location").value;
-  const address = document.getElementById("address").value;
-  const website = document.getElementById("website").value;
-
-  const rating = parseInt(document.getElementById("rating").value) || 0;
-
-  const open = document.getElementById("open").value;
-  const close = document.getElementById("close").value;
-
-  const maps_link = document.getElementById("maps_link").value;
-
-  const opening_hours = open && close ? `${open} - ${close}` : "";
-
-  await fetch("/api/venues", {
-    method: "POST",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
-    body: JSON.stringify({
-      name,
-      category,
-      location,
-      address,
-      website,
-      rating,
-      opening_hours,
-      maps_link,
-    }),
-  });
-
-  // clear form
-  document.getElementById("name").value = "";
-  document.getElementById("address").value = "";
-  document.getElementById("website").value = "";
-  document.getElementById("rating").value = "";
-  document.getElementById("open").value = "";
-  document.getElementById("close").value = "";
-  document.getElementById("maps_link").value = "";
-
-  loadVenues();
 }
 
 function searchVenues() {
