@@ -134,14 +134,36 @@ body {
 
 /* HEADER */
 
+/* HEADER */
 h1 {
   background: #cda6d8;
-  padding: 18px 40px;
+  padding: 15px 40px;
   margin: 0;
   font-size: 26px;
-  font-weight: 700;
+  color: white;
+  
+  /* Flexbox makes children (span and img) sit on the same line */
+  display: flex;
+  justify-content: space-between; /* Pushes text left, image right */
+  align-items: center;            /* Centers them vertically */
 }
 
+/* LOGIN IMAGE STYLING */
+.header-login-img {
+  height: 45px;
+  width: 45px;
+  min-width: 45px;    /* Stops it from squishing on small screens */
+  object-fit: cover;  /* Keeps the image from looking stretched */
+  border-radius: 50%; /* Makes it a circle */
+  cursor: pointer;
+  transition: 0.3s;
+  flex-shrink: 0;     /* Ensures it stays 45px wide */
+}
+
+.header-login-img:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
 /* HERO IMAGE */
 
 .hero {
