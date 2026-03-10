@@ -1,3 +1,4 @@
+// Creating dependencies
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -7,10 +8,12 @@ dotenv.config();
 
 const app = express();
 
+// Allows for the frontend to talk with backend
 app.use(cors());
 app.use(express.json());
 app.use(express.static("../frontend"));
 
+// Connecting to the database
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -19,10 +22,12 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
+// Verifying that the backend server is running
 app.get("/api/health", (req, res) => {
   res.json({ ok: true });
 });
 
+// Fetching the venues:
 app.get("/api/venues", async (req, res) => {
   const { category, location } = req.query;
 
@@ -46,6 +51,7 @@ app.get("/api/venues", async (req, res) => {
   res.json(rows);
 });
 
+// Add a new venue to the table
 app.post("/api/venues", async (req, res) => {
   try {
     console.log("Incoming venue:", req.body);
@@ -61,6 +67,7 @@ app.post("/api/venues", async (req, res) => {
       maps_link,
     } = req.body;
 
+    // This inserts the venue into the database:
     await pool.query(
       `INSERT INTO venues
       (name, category, location, address, website, rating, opening_hours, maps_link)
@@ -84,6 +91,7 @@ app.post("/api/venues", async (req, res) => {
   }
 });
 
+// Login endpoint: Checking the username and password, and if it matches a user in the database
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -113,6 +121,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+// Updating a venue
 app.put("/api/venues/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -127,6 +136,7 @@ app.put("/api/venues/:id", async (req, res) => {
     maps_link,
   } = req.body;
 
+  // This updates the venue in the database:
   await pool.query(
     `UPDATE venues
 SET name=?, category=?, location=?, address=?, website=?, rating=?, opening_hours=?, maps_link=?
@@ -147,6 +157,7 @@ WHERE id=?`,
   res.json({ success: true });
 });
 
+// Deleting a venue
 app.delete("/api/venues/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -155,8 +166,10 @@ app.delete("/api/venues/:id", async (req, res) => {
   res.json({ message: "Venue deleted" });
 });
 
+// Starting the server on port 3000
 const port = Number(process.env.PORT || 3000);
 
+// This starts the backend server:
 app.listen(port, () => {
   console.log(`Backend running at http://localhost:${port}`);
 });
