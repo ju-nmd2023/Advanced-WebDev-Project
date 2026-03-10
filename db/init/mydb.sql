@@ -1,12 +1,15 @@
 CREATE TABLE IF NOT EXISTS venues (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  category VARCHAR(100),
-  address VARCHAR(255),
-  description TEXT,
-  website VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-); 
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ name VARCHAR(255) NOT NULL,
+ category VARCHAR(100),
+ location VARCHAR(100),
+ address VARCHAR(255),
+ description TEXT,
+ website VARCHAR(255),
+ rating INT,
+ opening_hours VARCHAR(100),
+ maps_link TEXT
+);
 
 CREATE TABLE IF NOT EXISTS users (
  id INT AUTO_INCREMENT PRIMARY KEY,
