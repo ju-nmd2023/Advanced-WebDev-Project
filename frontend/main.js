@@ -407,7 +407,7 @@ function searchVenues() {
   const search = document.getElementById("searchInput").value.toLowerCase();
 
   const filtered = allVenues.filter((v) =>
-    v.name.toLowerCase().includes(search),
+    v.name.toLowerCase().includes(search)
   );
 
   renderVenues(filtered);
