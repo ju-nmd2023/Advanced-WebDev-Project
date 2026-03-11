@@ -1,4 +1,5 @@
 let currentCategory = "";
+let selectedCategories = new Set();
 let allVenues = [];
 
 // Checking session for user, and if the admin is present
@@ -26,6 +27,15 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+function normalizeText(value) {
+  return (value ?? "")
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 // LOAD VENUES
 async function loadVenues() {
   let url = "/api/venues";
@@ -39,7 +49,26 @@ async function loadVenues() {
 
   allVenues = venues;
 
-  renderVenues(venues);
+  renderVenues(getFilteredVenues());
+}
+
+function getFilteredVenues() {
+  const search = normalizeText(
+    document.getElementById("searchInput")?.value ?? ""
+  );
+
+  return allVenues.filter((v) => {
+    const matchesSearch = search
+      ? normalizeText(v.name).includes(search)
+      : true;
+
+    if (!matchesSearch) return false;
+
+    if (selectedCategories.size === 0) return true; // "All categories"
+
+    const venueCategory = normalizeText(v.category);
+    return selectedCategories.has(venueCategory);
+  });
 }
 
 // RENDER VENUES
@@ -281,35 +310,58 @@ async function deleteVenue(id) {
 
 // FILTER CATEGORY
 function filterCategory(category, btn) {
-  currentCategory = category;
-  loadVenues();
-
-  // Visually toggle green active state on clicked buttons, but keep "All" neutral
-  if (btn) {
-    if (category === "") {
-      // Toggle a separate selected style for "All"
-      btn.classList.toggle("all-selected");
+  if (category === "") {
+    // "All categories" clears category filters
+    selectedCategories.clear();
+  } else {
+    const key = normalizeText(category);
+    if (selectedCategories.has(key)) {
+      selectedCategories.delete(key);
     } else {
-      btn.classList.toggle("active");
-
-      // If any specific category is active, make sure "All" is not
-      const allBtn = document.querySelector(
-        '.category-buttons .category-btn[data-category=""]'
-      );
-      if (allBtn) {
-        allBtn.classList.remove("all-selected");
-      }
+      selectedCategories.add(key);
     }
   }
 
-  // Only the "All" button (empty category) controls showing/hiding extra buttons
+  updateCategoryButtonStyles();
+  renderVenues(getFilteredVenues());
+}
+
+function updateCategoryButtonStyles() {
+  const buttons = document.querySelectorAll(
+    ".category-buttons .category-btn[data-category]"
+  );
+
+  buttons.forEach((b) => {
+    b.classList.remove("active");
+    b.classList.remove("all-selected");
+
+    const cat = b.dataset.category ?? "";
+    if (cat !== "" && selectedCategories.has(normalizeText(cat))) {
+      b.classList.add("active");
+    }
+  });
+
+  const allBtn = document.querySelector(
+    '.category-buttons .category-btn[data-category=""]'
+  );
+
+  if (allBtn && selectedCategories.size === 0) {
+    allBtn.classList.add("all-selected");
+  }
+}
+
+function toggleMoreCategories() {
   const container = document.querySelector(".category-buttons");
 
   if (!container) return;
 
-  if (category === "") {
-    // Toggle extra category visibility when clicking "All"
-    container.classList.toggle("show-more");
+  container.classList.toggle("show-more");
+
+  const moreBtn = document.getElementById("moreButton");
+  if (moreBtn) {
+    moreBtn.textContent = container.classList.contains("show-more")
+      ? "Less"
+      : "More";
   }
 }
 
@@ -362,8 +414,8 @@ function searchVenues() {
 }
 
 // INITIAL LOAD
-loadVenues();
-document.addEventListener("DOMContentLoaded", () => {
-  // Mark initial category ("All") as active
-  setActiveCategoryButton(currentCategory);
+window.addEventListener("DOMContentLoaded", () => {
+  // Default: no category filters => "All categories" appears selected
+  updateCategoryButtonStyles();
+  loadVenues();
 });

@@ -141,23 +141,23 @@ h1 {
   margin: 0;
   font-size: 26px;
   color: white;
-  
+
   /* Flexbox makes children (span and img) sit on the same line */
   display: flex;
   justify-content: space-between; /* Pushes text left, image right */
-  align-items: center;            /* Centers them vertically */
+  align-items: center; /* Centers them vertically */
 }
 
 /* LOGIN IMAGE STYLING */
 .header-login-img {
   height: 45px;
   width: 45px;
-  min-width: 45px;    /* Stops it from squishing on small screens */
-  object-fit: cover;  /* Keeps the image from looking stretched */
+  min-width: 45px; /* Stops it from squishing on small screens */
+  object-fit: cover; /* Keeps the image from looking stretched */
   border-radius: 50%; /* Makes it a circle */
   cursor: pointer;
   transition: 0.3s;
-  flex-shrink: 0;     /* Ensures it stays 45px wide */
+  flex-shrink: 0; /* Ensures it stays 45px wide */
 }
 
 .header-login-img:hover {
@@ -254,6 +254,22 @@ h2 {
   color: #1f3a12;
 }
 
+/* "More" toggle button for revealing the remaining categories */
+.more-btn {
+  background: #f3f3f3;
+  color: #2e1037;
+  border-radius: 22px;
+  border: 1px solid #d5d5d5;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.more-btn:hover {
+  background: #e3e3e3;
+}
+
 /* SEARCH + FILTER AREA */
 
 .top-controls {
@@ -338,19 +354,19 @@ button:hover {
 
 .add-venue-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
-  padding: 0 40px 40px 40px; 
+  padding: 0 40px 40px 40px;
   box-sizing: border-box;
 }
 
 .add-venue-form input,
 .add-venue-form select {
-  width: 100%; 
-  height: 40px; 
+  width: 100%;
+  height: 40px;
   padding: 10px;
   font-size: 14px;
-  border-radius: 8px; 
+  border-radius: 8px;
   border: 1px solid #ddd;
   box-sizing: border-box;
   background: white;
@@ -363,7 +379,7 @@ button:hover {
 }
 
 .add-venue-form button {
-  grid-column: 1 / -1; 
+  grid-column: 1 / -1;
   height: 45px;
   background: #cda6d8;
   color: white;
