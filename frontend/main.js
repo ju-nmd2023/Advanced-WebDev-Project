@@ -1,15 +1,17 @@
+// Storing the categories
 let currentCategory = "";
 let selectedCategories = new Set();
 let allVenues = [];
 
-// Checking session for user, and if the admin is present
+// Checking session for user
 const user = JSON.parse(localStorage.getItem("user"));
 const isAdmin = user && user.role === "admin";
 
+// Getting the login, logged in user, add venue, etc. when the page is loaded
 window.addEventListener("DOMContentLoaded", () => {
   const devLink = document.getElementById("developerLink");
 
-  if (isAdmin) {
+  if (isAdmin && devLink) {
     devLink.innerText = "Logout";
 
     devLink.onclick = function (e) {
@@ -21,10 +23,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (!isAdmin) {
     const addSection = document.getElementById("addVenueSection");
-    if (addSection) {
-      addSection.style.display = "none";
-    }
+    if (addSection) addSection.style.display = "none";
   }
+
+  loadVenues();
 });
 
 function normalizeText(value) {
@@ -36,7 +38,7 @@ function normalizeText(value) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-// LOAD VENUES
+// Loadin the venues
 async function loadVenues() {
   let url = "/api/venues";
 
@@ -71,25 +73,29 @@ function getFilteredVenues() {
   });
 }
 
-// RENDER VENUES
-function renderVenues(venues) {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+// Creating the venue cards
+function createVenueCard(v) {
+  const rating = parseInt(v.rating) || 0;
+  const stars = "⭐".repeat(rating);
 
-  venues.forEach((v) => {
-    const rating = parseInt(v.rating) || 0;
-    const stars = "⭐".repeat(rating);
-
-    const div = document.createElement("div");
-    div.classList.add("venue-card");
-
-    div.innerHTML = `
-
+  return `
 <div id="view-${v.id}">
 
 <h3>${v.name}</h3>
 <p>Location: ${v.location || ""}</p>
 <p>Opening hours: ${v.opening_hours || ""}</p>
+
+<div id="details-${v.id}" class="venue-details" style="display:none">
+
+<p><strong>Category:</strong> ${v.category || ""}</p>
+<p><strong>Address:</strong> ${v.address || ""}</p>
+<p><strong>Website:</strong> <a href="${
+    v.website
+  }" target="_blank">Visit</a></p>
+<p><strong>Rating:</strong> ${stars}</p>
+<p><a href="${v.maps_link}" target="_blank">Google Maps</a></p>
+
+</div>
 
 <button id="toggle-${v.id}" onclick="toggleDetails(${v.id})">
 Read more
@@ -103,15 +109,6 @@ ${
 `
     : ""
 }
-<div id="details-${v.id}" style="display:none">
-
-<p>Category: ${v.category || ""}</p>
-<p>Address: ${v.address || ""}</p>
-<p>Website: <a href="${v.website}" target="_blank">Visit</a></p>
-<p>Rating: ${stars}</p>
-<p><a href="${v.maps_link}" target="_blank">Google Maps</a></p>
-
-</div>
 
 </div>
 
@@ -122,8 +119,8 @@ ${
 
 <select id="edit-category-${v.id}">
 <option value="restaurant" ${
-      v.category === "restaurant" ? "selected" : ""
-    }>Restaurant</option>
+    v.category === "restaurant" ? "selected" : ""
+  }>Restaurant</option>
 <option value="cafe" ${v.category === "cafe" ? "selected" : ""}>Cafe</option>
 <option value="bar" ${v.category === "bar" ? "selected" : ""}>Bar</option>
 <option value="venue" ${v.category === "venue" ? "selected" : ""}>Venue</option>
@@ -131,27 +128,27 @@ ${
 
 <select id="edit-location-${v.id}">
 <option value="centrum" ${
-      v.location === "centrum" ? "selected" : ""
-    }>Centrum</option>
+    v.location === "centrum" ? "selected" : ""
+  }>Centrum</option>
 <option value="torpa" ${v.location === "torpa" ? "selected" : ""}>Torpa</option>
 <option value="huskvarna" ${
-      v.location === "huskvarna" ? "selected" : ""
-    }>Huskvarna</option>
+    v.location === "huskvarna" ? "selected" : ""
+  }>Huskvarna</option>
 </select>
 
 <input id="edit-address-${v.id}" value="${v.address || ""}" />
 <input id="edit-website-${v.id}" value="${v.website || ""}" />
 
 <input id="edit-rating-${v.id}" type="number" min="1" max="5" value="${
-      v.rating || ""
-    }" />
+    v.rating || ""
+  }" />
 
 <input id="edit-open-${v.id}" value="${
-      v.opening_hours ? v.opening_hours.split(" - ")[0] : ""
-    }" />
+    v.opening_hours ? v.opening_hours.split(" - ")[0] : ""
+  }" />
 <input id="edit-close-${v.id}" value="${
-      v.opening_hours ? v.opening_hours.split(" - ")[1] : ""
-    }" />
+    v.opening_hours ? v.opening_hours.split(" - ")[1] : ""
+  }" />
 
 <input id="edit-maps-${v.id}" value="${v.maps_link || ""}" />
 
@@ -161,14 +158,25 @@ ${
 </div>
 
 <hr>
-
 `;
+}
+
+// Rendering the venues
+function renderVenues(venues) {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  venues.forEach((v) => {
+    const div = document.createElement("div");
+    div.classList.add("venue-card");
+
+    div.innerHTML = createVenueCard(v);
 
     list.appendChild(div);
   });
 }
 
-// TOGGLE READ MORE
+// Toggle button for "read more"
 function toggleDetails(id) {
   const details = document.getElementById(`details-${id}`);
   const button = document.getElementById(`toggle-${id}`);
@@ -182,7 +190,7 @@ function toggleDetails(id) {
   }
 }
 
-// ADD VENUE
+// Adding a venue
 async function addVenue() {
   if (!isAdmin) {
     alert("Only admins can add venues.");
@@ -194,7 +202,6 @@ async function addVenue() {
   const location = document.getElementById("location").value;
   const address = document.getElementById("address").value;
   const website = document.getElementById("website").value;
-
   const rating = parseInt(document.getElementById("rating").value) || 0;
 
   const open = document.getElementById("open").value;
@@ -206,11 +213,7 @@ async function addVenue() {
 
   await fetch("/api/venues", {
     method: "POST",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name,
       category,
@@ -223,31 +226,21 @@ async function addVenue() {
     }),
   });
 
-  // clear form
-  document.getElementById("name").value = "";
-  document.getElementById("address").value = "";
-  document.getElementById("website").value = "";
-  document.getElementById("rating").value = "";
-  document.getElementById("open").value = "";
-  document.getElementById("close").value = "";
-  document.getElementById("maps_link").value = "";
-
   loadVenues();
 }
 
-// START EDIT
+// Editing a venue
 function startEdit(id) {
   document.getElementById(`view-${id}`).style.display = "none";
   document.getElementById(`edit-${id}`).style.display = "block";
 }
 
-// CANCEL EDIT
 function cancelEdit(id) {
   document.getElementById(`view-${id}`).style.display = "block";
   document.getElementById(`edit-${id}`).style.display = "none";
 }
 
-// SAVE EDIT
+// Saving the edit
 async function saveEdit(id) {
   if (!isAdmin) {
     alert("Only admins can edit venues.");
@@ -274,11 +267,7 @@ async function saveEdit(id) {
 
   await fetch(`/api/venues/${id}`, {
     method: "PUT",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name,
       category,
@@ -294,74 +283,60 @@ async function saveEdit(id) {
   loadVenues();
 }
 
-// DELETE VENUE
+// Deleting a venue
 async function deleteVenue(id) {
   if (!isAdmin) {
     alert("Only admins can delete venues.");
     return;
   }
 
-  await fetch(`/api/venues/${id}`, {
-    method: "DELETE",
-  });
+  await fetch(`/api/venues/${id}`, { method: "DELETE" });
 
   loadVenues();
 }
 
-// FILTER CATEGORY
+// Searching for a venue (reacts on current input)
+function searchVenues() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  const filtered = allVenues.filter((v) =>
+    v.name.toLowerCase().includes(search)
+  );
+
+  renderVenues(filtered);
+}
+
+// Filter venues by location, category, and "open now"
 function filterCategory(category, btn) {
-  if (category === "") {
-    // "All categories" clears category filters
-    selectedCategories.clear();
-  } else {
-    const key = normalizeText(category);
-    if (selectedCategories.has(key)) {
-      selectedCategories.delete(key);
+  currentCategory = category;
+  loadVenues();
+
+  // Visually toggle green active state on clicked buttons, but keep "All" neutral
+  if (btn) {
+    if (category === "") {
+      // Toggle a separate selected style for "All"
+      btn.classList.toggle("all-selected");
     } else {
-      selectedCategories.add(key);
+      btn.classList.toggle("active");
+
+      // If any specific category is active, make sure "All" is not
+      const allBtn = document.querySelector(
+        '.category-buttons .category-btn[data-category=""]'
+      );
+      if (allBtn) {
+        allBtn.classList.remove("all-selected");
+      }
     }
   }
 
-  updateCategoryButtonStyles();
-  renderVenues(getFilteredVenues());
-}
-
-function updateCategoryButtonStyles() {
-  const buttons = document.querySelectorAll(
-    ".category-buttons .category-btn[data-category]"
-  );
-
-  buttons.forEach((b) => {
-    b.classList.remove("active");
-    b.classList.remove("all-selected");
-
-    const cat = b.dataset.category ?? "";
-    if (cat !== "" && selectedCategories.has(normalizeText(cat))) {
-      b.classList.add("active");
-    }
-  });
-
-  const allBtn = document.querySelector(
-    '.category-buttons .category-btn[data-category=""]'
-  );
-
-  if (allBtn && selectedCategories.size === 0) {
-    allBtn.classList.add("all-selected");
-  }
-}
-
-function toggleMoreCategories() {
+  // Only the "All" button (empty category) controls showing/hiding extra buttons
   const container = document.querySelector(".category-buttons");
 
   if (!container) return;
 
-  container.classList.toggle("show-more");
-
-  const moreBtn = document.getElementById("moreButton");
-  if (moreBtn) {
-    moreBtn.textContent = container.classList.contains("show-more")
-      ? "Less"
-      : "More";
+  if (category === "") {
+    // Toggle extra category visibility when clicking "All"
+    container.classList.toggle("show-more");
   }
 }
 
@@ -373,19 +348,15 @@ async function applyFilters() {
 
   let url = "/api/venues?";
 
-  if (location) {
-    url += `location=${location}&`;
-  }
-
-  if (category) {
-    url += `category=${category}&`;
-  }
+  if (location) url += `location=${location}&`;
+  if (category) url += `category=${category}&`;
 
   const res = await fetch(url);
   let venues = await res.json();
 
   if (openNow) {
     const now = new Date();
+
     const currentTime =
       now.getHours().toString().padStart(2, "0") +
       ":" +
@@ -414,8 +385,8 @@ function searchVenues() {
 }
 
 // INITIAL LOAD
-window.addEventListener("DOMContentLoaded", () => {
-  // Default: no category filters => "All categories" appears selected
-  updateCategoryButtonStyles();
-  loadVenues();
+loadVenues();
+document.addEventListener("DOMContentLoaded", () => {
+  // Mark initial category ("All") as active
+  setActiveCategoryButton(currentCategory);
 });
