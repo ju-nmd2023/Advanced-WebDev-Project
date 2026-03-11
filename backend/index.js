@@ -11,7 +11,6 @@ const app = express();
 // Allows for the frontend to talk with backend
 app.use(cors());
 app.use(express.json());
-// Makes it use the frontend folder
 app.use(express.static("../frontend"));
 
 // Connecting to the database
