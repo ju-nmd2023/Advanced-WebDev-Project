@@ -1,7 +1,9 @@
+// Sending the username and password to the backend API to check for user
 async function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
+  // Sending post request to backend API
   const res = await fetch("/api/login", {
     method: "POST",
     headers: {
@@ -13,8 +15,11 @@ async function login() {
     }),
   });
 
+  // Converts request from the server into JSON
   const data = await res.json();
 
+  // Login success :
+  // It stores the information in localstorage to remember user across pages
   if (data.success) {
     localStorage.setItem(
       "user",
@@ -24,7 +29,10 @@ async function login() {
       })
     );
 
+    // Redirect to main page
     window.location.href = "/";
+
+    // Login failed:
   } else {
     document.getElementById("message").innerText = "Login failed";
   }
