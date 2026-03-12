@@ -295,48 +295,62 @@ async function deleteVenue(id) {
   loadVenues();
 }
 
-// Searching for a venue (reacts on current input)
-function searchVenues() {
-  const search = document.getElementById("searchInput").value.toLowerCase();
-
-  const filtered = allVenues.filter((v) =>
-    v.name.toLowerCase().includes(search)
-  );
-
-  renderVenues(filtered);
-}
-
 // Filter venues by location, category, and "open now"
 function filterCategory(category, btn) {
-  currentCategory = category;
-  loadVenues();
+  if (category === "") {
+    selectedCategories.clear();
+  } else {
+    const key = normalizeText(category);
 
-  // Visually toggle green active state on clicked buttons, but keep "All" neutral
-  if (btn) {
-    if (category === "") {
-      // Toggle a separate selected style for "All"
-      btn.classList.toggle("all-selected");
+    if (selectedCategories.has(key)) {
+      selectedCategories.delete(key);
     } else {
-      btn.classList.toggle("active");
-
-      // If any specific category is active, make sure "All" is not
-      const allBtn = document.querySelector(
-        '.category-buttons .category-btn[data-category=""]'
-      );
-      if (allBtn) {
-        allBtn.classList.remove("all-selected");
-      }
+      selectedCategories.add(key);
     }
   }
 
-  // Only the "All" button (empty category) controls showing/hiding extra buttons
+  updateCategoryButtonStyles();
+  renderVenues(getFilteredVenues());
+}
+
+function updateCategoryButtonStyles() {
+  const buttons = document.querySelectorAll(
+    ".category-buttons .category-btn[data-category]"
+  );
+
+  buttons.forEach((b) => {
+    b.classList.remove("active");
+    b.classList.remove("all-selected");
+
+    const cat = b.dataset.category ?? "";
+
+    if (cat !== "" && selectedCategories.has(normalizeText(cat))) {
+      b.classList.add("active");
+    }
+  });
+
+  const allBtn = document.querySelector(
+    '.category-buttons .category-btn[data-category=""]'
+  );
+
+  if (allBtn && selectedCategories.size === 0) {
+    allBtn.classList.add("all-selected");
+  }
+}
+
+function toggleMoreCategories() {
   const container = document.querySelector(".category-buttons");
 
   if (!container) return;
 
-  if (category === "") {
-    // Toggle extra category visibility when clicking "All"
-    container.classList.toggle("show-more");
+  container.classList.toggle("show-more");
+
+  const moreBtn = document.getElementById("moreButton");
+
+  if (moreBtn) {
+    moreBtn.textContent = container.classList.contains("show-more")
+      ? "Less"
+      : "More";
   }
 }
 
@@ -383,10 +397,3 @@ function searchVenues() {
 
   renderVenues(filtered);
 }
-
-// INITIAL LOAD
-loadVenues();
-document.addEventListener("DOMContentLoaded", () => {
-  // Mark initial category ("All") as active
-  setActiveCategoryButton(currentCategory);
-});
